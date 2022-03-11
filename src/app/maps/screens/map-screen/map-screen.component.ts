@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
   selector: 'app-map-screen',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapScreenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private placesService: PlacesService) { }
 
   ngOnInit(): void {
   }
