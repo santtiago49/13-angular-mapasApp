@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { delay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PlacesService {
   }
 
   constructor() {
-    this.getUserLocation()
+    this.getUserLocation();
   } 
 
   public async getUserLocation(): Promise<[number, number]> {
