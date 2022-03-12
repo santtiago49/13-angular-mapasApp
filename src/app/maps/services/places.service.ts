@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import { delay } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Feature, PlacesResponse } from '../interfaces/places';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlacesService {
-  
+
   
   public userLocation?: [number, number];
+  public isLoadingPlaces: boolean = false;
+  public places: Feature[] = [];
+  
 
   get isUserLocationReady(): boolean{
     return !!this.userLocation;
   }
 
-  constructor() {
-    this.getUserLocation();
-  } 
+  constructor(
+    private http: HttpClient
+  ) { this.getUserLocation() } 
 
   public async getUserLocation(): Promise<[number, number]> {
 
@@ -37,4 +41,20 @@ export class PlacesService {
     })
       
   }
+
+  getPlacesByQuery( query: string ){
+
+    this.isLoadingPlaces = true;
+
+    this.http.get<PlacesResponse>(`https://api.mapbox.com/geocoding/v5/mapbox.places/${ query }.json?country=ar&limit=5&proximity=-58.184036533984084,-26.158798019707206&language=es&access_token=pk.eyJ1Ijoic2FudHRpYWdvNDkiLCJhIjoiY2wwbWp0N2M5MTZ1eTNob3R4cng0bXlyOCJ9.NsrjdmOLmVtb5HzNZffqWQ`)
+      .subscribe( resp => {
+        console.log(resp.features);
+        this.places = resp.features;
+
+        this.isLoadingPlaces = false;
+      })
+
+
+  }
+
 }
