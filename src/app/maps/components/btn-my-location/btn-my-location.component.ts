@@ -1,20 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { GeolocateControl } from "mapbox-gl";
+import { Component } from '@angular/core';
+import { MapService } from '../../services/map.service';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
   selector: 'app-btn-my-location',
   templateUrl: './btn-my-location.component.html',
   styleUrls: ['./btn-my-location.component.css']
 })
-export class BtnMyLocationComponent implements OnInit {
+export class BtnMyLocationComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor( 
+    private placesService: PlacesService,
+    private mapService: MapService
+  ) { }
 
   goToMyLocation(){
-    console.log('Esta es mi ubicación');
+    if( !this.placesService.isUserLocationReady ) throw Error('No hay ubicacion de usuario')
+    if (!this.mapService.isMapReady) throw Error('No se ha inicializado el mapa')
+
+
+    this.mapService.flyTo( this.placesService.userLocation! ); 
+    
   }
  
 }
