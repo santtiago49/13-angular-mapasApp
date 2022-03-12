@@ -44,6 +44,12 @@ export class PlacesService {
 
   getPlacesByQuery( query: string ){
 
+    if(query.length === 0){
+      this.places = [];
+      this.isLoadingPlaces = false;
+      return;
+    }
+
     this.isLoadingPlaces = true;
 
     this.http.get<PlacesResponse>(`https://api.mapbox.com/geocoding/v5/mapbox.places/${ query }.json?country=ar&limit=5&proximity=-58.184036533984084,-26.158798019707206&language=es&access_token=pk.eyJ1Ijoic2FudHRpYWdvNDkiLCJhIjoiY2wwbWp0N2M5MTZ1eTNob3R4cng0bXlyOCJ9.NsrjdmOLmVtb5HzNZffqWQ`)
