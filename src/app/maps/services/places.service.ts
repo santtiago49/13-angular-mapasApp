@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Feature, PlacesResponse } from '../interfaces/places';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class PlacesService {
   }
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private mapService: MapService
   ) { this.getUserLocation() } 
 
   public async getUserLocation(): Promise<[number, number]> {
@@ -56,6 +58,7 @@ export class PlacesService {
       .subscribe( resp => {
         console.log(resp.features);
         this.places = resp.features;
+        this.mapService.createMarkersFromPlaces(this.places)
 
         this.isLoadingPlaces = false;
       })
