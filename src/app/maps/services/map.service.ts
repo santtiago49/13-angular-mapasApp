@@ -28,7 +28,7 @@ export class MapService {
 
   }
 
-  createMarkersFromPlaces( places: Feature[] ){
+  createMarkersFromPlaces( places: Feature[], userLocation: [number, number] ){
     if( !this.map ) throw Error('Mapa no inicializado')
 
     this.markers.forEach( marker => marker.remove() )
@@ -56,6 +56,7 @@ export class MapService {
 
     // Limite del mapa
     const bounds = new LngLatBounds();
+    bounds.extend(userLocation);
     newMarkers.forEach( marker => {
       bounds.extend(marker.getLngLat())
     });

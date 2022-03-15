@@ -58,7 +58,7 @@ export class PlacesService {
       .subscribe( resp => {
         console.log(resp.features);
         this.places = resp.features;
-        this.mapService.createMarkersFromPlaces(this.places)
+        this.mapService.createMarkersFromPlaces(this.places, this.userLocation!)
 
         this.isLoadingPlaces = false;
       })
