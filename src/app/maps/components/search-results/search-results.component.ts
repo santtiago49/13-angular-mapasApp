@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { PlacesService } from '../../services/places.service';
+
 import { Feature } from '../../interfaces/places';
+
+import { PlacesService } from '../../services/places.service';
 import { MapService } from '../../services/map.service';
-import { LngLatLike } from 'mapbox-gl';
 
 @Component({
   selector: 'app-search-results',
@@ -26,14 +27,22 @@ export class SearchResultsComponent {
     return this.placesService.places;
   }
 
-
-
-
   flyTo(place: Feature){
     this.selectedId = place.id;
 
     const [lng, lat] = place.center;
     this.mapService.flyTo([lng,lat]);
+  }
+
+  getDirections( place: Feature ){
+
+    if ( !this.placesService.userLocation ) throw Error('No hay userLocation');
+
+    const start = this.placesService.userLocation;
+    const end = place.center as [number, number];
+
+    this.mapService.getRouteBetweenTwoPoints( start, end )
+
   }
 
 
